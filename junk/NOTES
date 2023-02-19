@@ -1,0 +1,35 @@
+- found cheap on ebay, thanks @christian!
+- nicely built case, expensive connectors
+- main components on pcb:
+  - ARM SOC, flash, RAM
+  - ADCs, FPGA
+  - power supplies, figuring out the rail voltages
+  - ethernet
+- dumping the flash:
+  - T48? no adapter!
+  - openocd support for chip: jtag?
+  - pinout: google!
+  - repo with dump scripts
+- exploring the image:
+  - strings: linux!
+  - binwalk to figure out the general structure
+  - JFFS2 image! extract with dd and mount to extract rootfs
+- connecting:
+  - eth0 config in /etc
+  - nmap of interface to get open ports
+  - telnetd -> we need a password
+  - /etc/passwd has the hash
+  - jack the ripper to brute force it (fast!)
+- exploring the other running services:
+  - ps -A
+  - port 20000: equus!
+- ghidra:
+  - still has debug symbols
+  - dbg_printf is empty
+  - patch to branch to printf
+  - two sockets! 20000 and 20001
+  - ftp to get the file back on the board
+- write python app
+  - somehow only works for one connection when only using control socket
+  - need to also send something to the other socket
+  - implementing the commands

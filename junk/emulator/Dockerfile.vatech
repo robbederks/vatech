@@ -1,0 +1,18 @@
+# Build from dumped rootfs
+FROM scratch AS vatech
+ADD rootfs.tar.gz /
+
+# Add qemu binaries for ARM emulation
+COPY --from=multiarch/qemu-user-static:x86_64-arm /usr/bin/qemu-arm-static /usr/bin
+
+# Statically built programs
+COPY gdb /usr/local/bin/gdb
+RUN chmod +x /usr/local/bin/gdb
+COPY strace /usr/local/bin/strace
+RUN chmod +x /usr/local/bin/strace
+
+# Fake memory
+RUN touch /dev/mem
+
+# Timezone
+COPY localtime /etc/localtime
