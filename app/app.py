@@ -151,6 +151,18 @@ class Xmaru:
     resp2 = self.ctrl_socket.recv(0x84)
     return code, resp2
 
+  def cmd_abort(self):
+    resp = self._ctrl_msg(0, 3)
+    code = struct.unpack("<I", resp[:4])[0]
+    resp2 = self.ctrl_socket.recv(0x84)
+    return code, resp2
+
+  def cmd_msg_data_done(self):
+    resp = self._ctrl_msg(0, 0xFF)
+    code = struct.unpack("<I", resp[:4])[0]
+    return code
+
+
 if __name__ == "__main__":
   x = Xmaru(IP)
   # print(x.cmd_aux_def_status())
@@ -161,8 +173,10 @@ if __name__ == "__main__":
   # print(x.cmd_aux_tft_version())
   # print(x.cmd_aux_csi_version())
   print(x.cmd_init())
-  # print(x.cmd_start())
-  time.sleep(1)
+  print(x.cmd_msg_data_done())
+  print(x.cmd_start())
+  # print(x.cmd_abort())
+  # time.sleep(1)
   print(x.cmd_aux_self_xtst())
   print(x.cmd_aux_test_pattern())
   print(x._get_img())
